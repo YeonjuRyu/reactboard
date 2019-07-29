@@ -48,20 +48,37 @@ body {
   background-color: #ddd;
   color: black;
 }
-
-table, td, th {  
-  border: 1px solid #ddd;
-  text-align: left;
+/*list outline 서식*/
+.table_style{
+ 	max-width: 100%;
+ 	height: 206px;
+    border:2px solid gray;
+  	border-radius:0.5em;
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+    position:relative;
+    padding-top:3px;
+    }
+li {
+	max-width: 100%;
+    height: 50px;
+    border-bottom: 2px solid gray;
+    padding : 15px 0px 10px 20px;
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
+li.tail {
+	max-width: 100%;
+    height: 50px;
+    border:none;
+    padding : 15px 0px 10px 20px;
 }
-
-th, td {
-  padding: 15px;
-}
+/*list 내부 리스트(글자) 서식*/
+ul{
+	clear: left;
+    margin: 0;
+    padding : 0px 0px 0px 0px; /*위 왼 아래 오*/
+    list-style-type: none;
+	}
 
 /* column 서식*/
 .column {
@@ -105,20 +122,20 @@ img {
   padding : 0.1px;
 }
 
-a:link{
+a.columnleft:link{
   color : #3399ff;
   text-decoration: none;
 }
-a:unvisited {
+a.columnleft:unvisited {
   color : #3399ff;
   text-decoration: none;
 }
 
-a:hover{
+a.columnleft:hover{
   color: #003399;
   text-decoration: underline;
 }
-a:active{
+a.columnleft:active{
   color:#003399;
   text-decoration: underline;
 }
@@ -142,22 +159,23 @@ a:active{
 <div class="row">
   <div class="column left">
     <h1>게시판</h1>
-    <table>
-  <tr>
-    <td><a href="#">BOARD1</a></td>
-  </tr>
-  <tr>
-    <td><a href="#">BOARD2</a></td>
-  </tr>
-  <tr>
-    <td><a href="#">BOARD3</a></td>
-  </tr>
-  <tr>
-    <td><a href="#">BOARD4</a></td>
-  </tr>
-</table>
-  </div> 
-  <div class="column middle">
+     <div class = "table_style">
+      <ul>
+       <li><a class="columnleft" href="#">BOARD1</a></li>
+  	  </ul>
+      <ul>
+       <li><a class="columnleft" href="#">BOARD2</a></li>
+  	  </ul>
+      <ul>
+      <li><a class="columnleft" href="#">BOARD3</a></li> 
+      </ul>
+      <ul>
+      <li class="tail"><a class="columnleft" href="#">BOARD4</a></li>
+  </ul>
+  </div>
+ </div>
+ 
+<div class="column middle">
     <img src="https://cdn.pixabay.com/photo/2019/07/25/10/43/ballerina-4362282_960_720.jpg" alt="Default Image" style="width:700px;height:500px;"></div>
 </div>
 
@@ -166,6 +184,3 @@ a:active{
 
 </body>
 </html>
-
-
-
