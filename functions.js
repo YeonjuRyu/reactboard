@@ -110,16 +110,19 @@ input param: none
 output param: {result, boardList, error}
 */
 function boardlist(){
+    var rtValue='';
     fetch('http://27.1.60.24:9900/board/boardList', {
         method: 'GET'})
         .then((response) => response.json())
         .then((jsonObj) => {console.log(jsonObj)
             if(jsonObj.result == "ok") {
-                // 게시판 목록 페이지로 이동
+                console.log(jsonObj.boardList[0].board_name)
+               rtValue = jsonObj.boardList[0].board_name; // 게시판 목록 페이지로 이동
             } else if(jsonObj.result == "fail") {
                 alert('error! reason is:' + jsonObj.error)
             }
         })
+    return rtValue;
 }
 /*6번 기능
 endpoint: 27.1.60.24:9900/board/postList/:board의 id 값(ex: 27.1.60.24:9900/board/postList/1)
