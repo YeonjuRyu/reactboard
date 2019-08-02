@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko-KR">
-<head>
-<title>CSS Website Layout</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="mainstyle.css">
-</head>
 
+<head>
+  <title>CSS Website Layout</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="mainstyle.css">
+  <script src="./functions.js"></script> <!--api post get functions-->
+</head>
 
 <body>
 
@@ -21,48 +24,67 @@
 <div class="row">
   <div class="column left">
     <h1>게시판</h1>
-     <div class = "table_style_left">
-      <ul class = "table_style_left" >
-       <li class = "table_style_left"><a class="columnleft" href="#">BOARD1</a></li>
-  	  </ul>
-      <ul class = "table_style_left">
-       <li class = "table_style_left"><a class="columnleft" href="#">BOARD2</a></li>
-  	  </ul>
-      <ul class = "table_style_left">
-      <li class = "table_style_left"><a class="columnleft" href="#">BOARD3</a></li> 
-      </ul>
-      <ul class = "table_style_left">
-      <li class = "table_style_left_tail"><a class="columnleft" href="#">BOARD4</a></li>
-  </ul>
+     <div id="board_name" class = "table_style_left"> <!--일단 div로 영역을 만듬 이후에 js로 내부 태그 생성-->
   </div>
  </div>
  
-<div class="column middle">
-     <div class = "table_style_middle">
-      <ul class = "table_style_middle">
-       <li class = "table_style_middle_head"><p>게시글 리스트</p></li>
-  	  </ul>
-      <ul class = "table_style_middle">
-       <li class = "table_style_middle"><a class="column middle" href="#">게시글 제목</a><p class="column middle">등록일: / IP:</p></li>
-  	  </ul>
-      <ul class = "table_style_middle">
-       <li class = "table_style_middle"><a class="column middle" href="#">게시글 제목</a><p class="column middle">등록일: / IP:</p></li>
-  	  </ul>
-      <ul class = "table_style_middle">
-       <li class = "table_style_middle"><a class="column middle" href="#">게시글 제목</a><p class="column middle">등록일: / IP:</p></li>
-  	  </ul>
-      <ul class = "table_style_middle">
-      <li class = "table_style_middle_tail">
-      <a class="button2" href="#" target="_blank" style="float:right">삭제</a>
-      <a class="button1" href="#" target="_blank" style="float:right">글쓰기</a>
-      </li>
-  </ul>
+  <div class="column middle">
+    <div id="title">게시글 리스트</div> <!--게시글 리스트를 가져올 부분-->
+    <div id="post_title" class = "table_style_middle"></div>
+      <input type='button' id='button1' onclick='writepost()' value="글쓰기">
+      <input type='button' onclick='deletepost()' value='삭제'>
+  </div>
 </div>
-</div>
-</div>
-
 <div class="footer">
   <p> Copyright ⓒ Your Website 2019 </p>
+
+  <script>
+      {
+        /*
+        <!-- below items are created as # of board exists at server-->
+        //api call : getBoardList return ... */
+        var boardList = document.getElementById("board_name")
+        //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+        getboardlist( _boardList => {
+          for(var i=0; i<_boardList.length; i++) {
+            var ul = document.createElement('ul');
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.innerHTML = _boardList[i].board_name;
+
+            ul.appendChild(li); //ul 아래에 li을 넣어줌
+            li.appendChild(a); //ul 아래에 a를 넣어줌
+
+            boardList.appendChild(ul); 
+          }
+        });
+      };
+
+      {
+        var postList = document.getElementById("post_title")
+  
+        getpostlist( _postList => {
+          var ul = document.createElement('ul');  //post하나당 ul칸을 하나 일단 만들고 (서식용)
+          for(var i=0; i<_postList.length; i++){ //postlist개수 만큼 for문을 돌려서
+            var li = document.createElement('li'); //그 아래 li을 만들어서 값을 넣어준다. (서식용)
+            var key = Object.keys(_postList[i]);
+            var value = Object.values(_postList[i]); //postList array내의 key 갯수
+            for(var j=0; j<key.length-1; j++){ //key 값 만큼 for 문을 사용, 아이디 제
+               var a = document.createElement('a');
+               a.id = key[j+1];
+               a.innerHTML = value[j+1]
+               li.appendChild(a);
+            }
+            ul.appendChild(li);
+           }
+          postList.appendChild(ul);
+          }); 
+        };
+
+        function writepost(){
+          window.location.href="http://www.naver.com"; //글쓰기 form 만든 이후 연
+        }
+  </script>
 
 </body>
 </html>
