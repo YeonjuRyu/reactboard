@@ -129,8 +129,9 @@ method: get* (read)
 input param: boardid
 output param: {result, postList, error}
 */
-function getpostlist(_postlist){
-    return fetch('http://27.1.60.24:9900/board/postList/1'
+function getpostlist(_postlist, id){
+    return fetch(
+        'http://27.1.60.24:9900/board/postList/' + id
         ,{method: 'GET'})
         .then((response) => response.json())
         .then((jsonObj) => {

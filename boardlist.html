@@ -39,6 +39,7 @@
   <p> Copyright ⓒ Your Website 2019 </p>
 
   <script>
+      //~~~ function, block
       {
         /*
         <!-- below items are created as # of board exists at server-->
@@ -60,10 +61,11 @@
         });
       };
 
+      //~~~ function, block
       {
         var postList = document.getElementById("post_title")
-  
-        getpostlist( _postList => {
+        var id; //assume id value is set 
+        getpostlist( (_postList) => {
           var ul = document.createElement('ul');  //post하나당 ul칸을 하나 일단 만들고 (서식용)
           for(var i=0; i<_postList.length; i++){ //postlist개수 만큼 for문을 돌려서
             var li = document.createElement('li'); //그 아래 li을 만들어서 값을 넣어준다. (서식용)
@@ -78,12 +80,13 @@
             ul.appendChild(li);
            }
           postList.appendChild(ul);
-          }); 
-        };
+        }, id, param2, param3, ...); 
+      };
 
-        function writepost(){
-          window.location.href="http://www.naver.com"; //글쓰기 form 만든 이후 연
-        }
+      //~~~ auxilary function blocks...
+      function writepost(){
+        window.location.href="http://www.naver.com"; //글쓰기 form 만든 이후 연
+      }
   </script>
 
 </body>
