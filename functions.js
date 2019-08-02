@@ -1,6 +1,7 @@
-const fetch = require("node-fetch");
+/*const fetch = require("node-fetch");
 var express =  require('express');
 var app = express();
+*/
 
 /* 1번 기능
 version
@@ -9,7 +10,7 @@ method: get* (read)
 input param: none
 output param: version
 */
-function version(){
+function getversion(){
     let url = 'http://27.1.60.24:9900/test';
     fetch(url, {
         method: 'GET' //url에서 get해오기
@@ -26,7 +27,7 @@ method: post* (write)
 input param: {id, pw}
 output param: {result, error}
 */
-function register(userid, userpw){
+function postregister(userid, userpw){
     fetch('http://27.1.60.24:9900/auth/register', {
         method: 'POST',
         headers: {
@@ -54,7 +55,7 @@ method: get* (read)
 input param: {id, pw}
 output param: {result, error}
 */
-function login(userid, userpw){
+function getlogin(userid, userpw){
     fetch('http://27.1.60.24:9900/auth/login', {
         method: 'GET',
         headers: {
@@ -82,7 +83,7 @@ method: post* (update)
 input param: {id, pw, newPw}
 output param: {result, error}
 */
-function changepw(userid, userpw, usernewPw){
+function postchangepw(userid, userpw, usernewPw){
     fetch('http://27.1.60.24:9900/auth/update', {
         method: 'POST',
         headers: {
@@ -109,39 +110,36 @@ method: get* (read)
 input param: none
 output param: {result, boardList, error}
 */
-function boardlist(){
-    var rtValue='';
-    fetch('http://27.1.60.24:9900/board/boardList', {
-        method: 'GET'})
-        .then((response) => response.json())
-        .then((jsonObj) => {console.log(jsonObj)
-            if(jsonObj.result == "ok") {
-                console.log(jsonObj.boardList[0].board_name)
-               rtValue = jsonObj.boardList[0].board_name; // 게시판 목록 페이지로 이동
-            } else if(jsonObj.result == "fail") {
-                alert('error! reason is:' + jsonObj.error)
-            }
-        })
-    return rtValue;
+function getboardlist(_getboardlist){ 
+    return fetch('http://27.1.60.24:9900/board/boardList'
+    ,{method: 'GET'}) //promise
+    .then((response) => response.json()) //json object
+    .then((jsonObj) => {
+        if(jsonObj.result == "ok") {
+           _getboardlist(jsonObj.boardList); 
+        } else if(jsonObj.result == "fail") {
+            alert('error! reason is:' + jsonObj.error)
+        }
+    })
 }
+
 /*6번 기능
 endpoint: 27.1.60.24:9900/board/postList/:board의 id 값(ex: 27.1.60.24:9900/board/postList/1)
 method: get* (read)
 input param: boardid
 output param: {result, postList, error}
 */
-function postlist(boardid){
-    let url = 'http://27.1.60.24:9900/board/postList/'+String(boardid);
-    fetch(url, {
-        method: 'GET'})
+function getpostlist(_postlist){
+    return fetch('http://27.1.60.24:9900/board/postList/1'
+        ,{method: 'GET'})
         .then((response) => response.json())
-        .then((jsonObj) => {console.log(jsonObj)
-            if(jsonObj.result == "ok") {
-                'postList출력'
-            } else if(jsonObj.result == "fail") {
+        .then((jsonObj) => {
+            if(jsonObj.result == "ok"){
+                _postlist(jsonObj.postList);
+            } else if(jsonObj.result == "fail"){
                 alert('error! reason is:' + jsonObj.error)
             }
-        })
+    })
 }
 /*7번 기능
 endpoint: 27.1.60.24:9900/board/post/:post의 id(ex: 27.1.60.24:9900/board/post/1)
@@ -149,16 +147,19 @@ method: get* (read)
 input param: postid
 output param: {result, postDetail, error}
 */
-function viewpost(postid){
-    let url = 'http://27.1.60.24:9900/board/post/'+String(postid);
-    fetch(url, {
-        method: 'GET'})
+function getpostdetail(_getpostdetail){
+    return fetch('http://27.1.60.24:9900/board/post/1'
+        ,{method:'GET'})
         .then((response) => response.json())
-        .then((jsonObj) => {console.log(jsonObj)
-            if(jsonObj.result == "ok") {
-                'post Detail출력'
-            } else if(jsonObj.result == "fail") {
+        .then((jsonObj) =>  {
+            if(jsonObj.result == "ok"){
+                _getpostdetail(jsonObj.postDetail);
+            } else if(jsonObj.result == "fail"){
                 alert('error! reason is:' + jsonObj.error)
             }
         })
 }
+//boardlist();
+//postlist(1);
+//viewpost(1);
+//console.log(boardlist())
