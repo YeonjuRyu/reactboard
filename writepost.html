@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> 포스트 작성 </title>
+    <link rel="stylesheet" type="text/css" href="mainstyle.css"> <!-- 가존 서식 추가-->
+    <script src="./functions.js"></script> <!--api post get functions-->
+    <script src="./jquery-3.4.1.min.js"></script> <!-- JSQ 라이브러리 추가-->
+
+</head>
+
+<body>
+
+     <div class="topnav">
+        <a>React Board</a>
+        <b href="#">로그인</b>
+        <b href="#">사진</b>
+        <b href="#">소개</b>
+        <b href="#">게시판</b>
+    </div>
+
+    <div class="row">
+        <div class="column left">
+             <h1>게시판</h1>
+        <div id="board_name" class = "table_style_left"> <!--일단 div로 영역을 만듬 이후에 js로 내부 태그 생성-->
+        </div>
+    </div>
+        <div class="column middle">
+          <table id="writepost" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <caption> 포스트 작성 </caption>
+            </thead>
+            <tbody>
+                <form action="#" method="post">
+                    <tr>
+                        <th>제목: </th>
+                            <td><input type="text" id="textbox" placeholder="제목을 입력하세요. "></td>
+                    </tr>
+                     <tr>
+                        <th>내용: </th>
+                            <td><textarea cols="10" id="textbox" placeholder="내용을 입력하세요. "></textarea></td>
+                    </tr>
+                        <td>
+                        <input type="button" id="savetheposting" value="글 등록" onclick="sendData()">
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <div class="footer">
+        <p> Copyright ⓒ Your Website 2019 </p>
+    </div>
+        <script>
+                {
+                  /*
+                  <!-- below items are created as # of board exists at server-->
+                  //api call : getBoardList return ... */
+                  var boardList = document.getElementById("board_name")
+          
+                  //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+                  getboardlist( _boardList => {
+                    for(var i=0; i<_boardList.length; i++) {
+                      var ul = document.createElement('ul');
+                      var li = document.createElement('li');
+                      var a = document.createElement('a');
+                      a.innerHTML = _boardList[i].board_name;
+          
+                      ul.appendChild(li); //ul 아래에 li을 넣어줌
+                      li.appendChild(a); //ul 아래에 a를 넣어줌
+          
+                      boardList.appendChild(ul); 
+                    }
+                  });
+                };
+                {
+                    var posting = docummnet.getElementById("savetheposting")
+                    sendData()
+                }
+        </script>
+    </body>
+</html>
