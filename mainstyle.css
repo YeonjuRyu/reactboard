@@ -175,13 +175,13 @@ div.table_style_middle a#post_title:hover{
 }
 
 /*글쓰기 버튼*/
-#button1:link, #button1:visited {
+#button1 {
   color: white;
   padding: 10px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  background-color: green;
+  background-color: red;
   border-radius:0.5em;
   margin:0px 5px;
   -moz-border-radius: 0.5em;

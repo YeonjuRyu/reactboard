@@ -58,13 +58,35 @@
   
         {
           var postDetail = document.getElementById("post_detail")
-          getpostdetail( _postDetail => {
+          /*
+          postDetail = {
+          "id": 1,
+          "board_id": 1,
+          "post_title": "美 공모펀드 인기… 직접 투자도 해볼만 해외 부동산 투자해볼까",
+          "post_content": "국내 부동산 경기가 침체되면서 해외 부동산 투자로 눈을 돌리... ",
+          "post_reg_date": "2019-07-19 02:21:39 PM",
+          "post_user_name": "곽현철",
+          "post_reg_ip": "211.111.222.333"		
+          }
+          class PostDetail {
+            int _id;
+            int _board_id;
+            ...
+          }
+          PostDetail postDetail();
+          postDetail.id;
+          */
+          console.log('id:' + postDetail.id);
+          console.log('post_title:' + postDetail.post_title);
+
+          getpostdetail( postDetail => { //
             //for(var i=0; i<_postDetail.length; i++){
             var ul = document.createElement('ul');  //post하나당 ul칸을 하나 일단 만들고 (서식용)
             var li = document.createElement('li'); //그 아래 li을 만들어서 값을 넣어준다. (서식용)  
-            var key = Object.keys(_postDetail);
-            var value = Object.values(_postDetail);
-            for (var i=0; i<key.length-2; i++){
+
+            var keys = Object.keys(postDetail);
+            var values = Object.values(postDetail);
+            for (var i=0; i<key.length-2; i++){ //!fixme: object의 key값을 direct access하게 변경
               var p = document.createElement('p');
               p.id = key[i+2];
               p.innerHTML = value[i+2];

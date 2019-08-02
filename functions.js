@@ -147,13 +147,13 @@ method: get* (read)
 input param: postid
 output param: {result, postDetail, error}
 */
-function getpostdetail(_getpostdetail){
+function getpostdetail(UICallback){
     return fetch('http://27.1.60.24:9900/board/post/1'
         ,{method:'GET'})
         .then((response) => response.json())
         .then((jsonObj) =>  {
             if(jsonObj.result == "ok"){
-                _getpostdetail(jsonObj.postDetail);
+                UICallback(jsonObj.postDetail);
             } else if(jsonObj.result == "fail"){
                 alert('error! reason is:' + jsonObj.error)
             }
