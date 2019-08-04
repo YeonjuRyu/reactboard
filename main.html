@@ -16,7 +16,7 @@
 <body>
 
 <div class="topnav">
-  <a>React Board</a>
+  <a href="main.html">React Board</a>
   <b href="#">로그인</b>
   <b href="#">사진</b>
   <b href="#">소개</b>
@@ -38,4 +38,26 @@
   <p> Copyright ⓒ Your Website 2019 </p>
 
 </body>
+
+<script>
+  //~~~ function, to bring board 
+  {
+    var boardList = document.getElementById("board_name")
+    //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+    var ul = document.createElement('ul');
+    getboardlist( _boardList => {
+      for(var i=0; i<_boardList.length; i++) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.innerHTML = _boardList[i].board_name;
+        a.id = _boardList[i].id;
+        a.href = "boardlist.html?id="+_boardList[i].id;
+        li.appendChild(a)
+        ul.appendChild(li);
+      }
+      //ul.appendChild(li); //ul 아래에 li을 넣어줌 
+      boardList.appendChild(ul); 
+    });
+  };
+</script>
 </html>
