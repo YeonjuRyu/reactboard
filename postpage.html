@@ -11,7 +11,7 @@
 <body>
 
   <div class="topnav">
-    <a>React Board</a>
+    <a href="main.html">React Board</a>
     <b href="#">로그인</b>
     <b href="#">사진</b>
     <b href="#">소개</b>
@@ -33,69 +33,66 @@
   <div class="footer">
     <p> Copyright ⓒ Your Website 2019 </p>
   
-    <script>
-        {
-          /*
-          <!-- below items are created as # of board exists at server-->
-          //api call : getBoardList return ... */
-          var boardList = document.getElementById("board_name")
-  
-          //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
-          getboardlist( _boardList => {
-            for(var i=0; i<_boardList.length; i++) {
-              var ul = document.createElement('ul');
-              var li = document.createElement('li');
-              var a = document.createElement('a');
-              a.innerHTML = _boardList[i].board_name;
-  
-              ul.appendChild(li); //ul 아래에 li을 넣어줌
-              li.appendChild(a); //ul 아래에 a를 넣어줌
-  
-              boardList.appendChild(ul); 
-            }
-          });
-        };
+  <script>
+      //~~~ function, to bring board 
+      {
+        var boardList = document.getElementById("board_name")
+        //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+        var ul = document.createElement('ul');
+        getboardlist( _boardList => {
+          for(var i=0; i<_boardList.length; i++) {
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.innerHTML = _boardList[i].board_name;
+            a.id = _boardList[i].id;
+            a.href = "boardlist.html?id="+_boardList[i].id;
+            li.appendChild(a)
+            ul.appendChild(li);
+          }
+          //ul.appendChild(li); //ul 아래에 li을 넣어줌 
+          boardList.appendChild(ul); 
+        });
+      };
   
         {
           var postDetail = document.getElementById("post_detail")
-          /*
-          postDetail = {
-          "id": 1,
-          "board_id": 1,
-          "post_title": "美 공모펀드 인기… 직접 투자도 해볼만 해외 부동산 투자해볼까",
-          "post_content": "국내 부동산 경기가 침체되면서 해외 부동산 투자로 눈을 돌리... ",
-          "post_reg_date": "2019-07-19 02:21:39 PM",
-          "post_user_name": "곽현철",
-          "post_reg_ip": "211.111.222.333"		
-          }
-          class PostDetail {
-            int _id;
-            int _board_id;
-            ...
-          }
-          PostDetail postDetail();
-          postDetail.id;
-          */
-          console.log('id:' + postDetail.id);
-          console.log('post_title:' + postDetail.post_title);
-
-          getpostdetail( postDetail => { //
-            //for(var i=0; i<_postDetail.length; i++){
+          var params = new URLSearchParams(document.location.search.substring(1));
+          var parsedid = params.get("id");
+          getpostdetail( _postDetail => {
             var ul = document.createElement('ul');  //post하나당 ul칸을 하나 일단 만들고 (서식용)
-            var li = document.createElement('li'); //그 아래 li을 만들어서 값을 넣어준다. (서식용)  
-
-            var keys = Object.keys(postDetail);
-            var values = Object.values(postDetail);
-            for (var i=0; i<key.length-2; i++){ //!fixme: object의 key값을 direct access하게 변경
-              var p = document.createElement('p');
-              p.id = key[i+2];
-              p.innerHTML = value[i+2];
-              li.appendChild(p);
-            }
-            ul.appendChild(li);
+            /*제목*/
+            var li_title = document.createElement('li');
+            li_title.id = "post_title";
+            li_title.innerHTML = _postDetail.post_title;
+            ul.appendChild(li_title);
             postDetail.appendChild(ul);
-            });
-          };
+            /*사용자*/
+            var li_username = document.createElement('li');
+            li_username.id = "post_user_name";
+            li_username.href = "#"
+            li_username.innerHTML = "by " + _postDetail.post_user_name;
+            ul.appendChild(li_username);
+            postDetail.appendChild(ul);
+            /*포스트 날짜*/
+            var li_regtime = document.createElement('li');
+            li_regtime.id = "post_reg_date";
+            li_regtime.innerHTML = "Posted on " + _postDetail.post_reg_date;
+            ul.appendChild(li_regtime);
+            postDetail.appendChild(ul);
+            /*포스트 내용*/
+            var li_content = document.createElement('li');
+            li_content.id = "post_content";
+            li_content.innerHTML = _postDetail.post_content;
+            ul.appendChild(li_content);
+            postDetail.appendChild(ul);
+            /* IP*/
+            var li_regip = document.createElement('li');
+            li_regip.id = "post_reg_ip";
+            li_regip.innerHTML = "[ IP: "+_postDetail.post_reg_ip +" ]";
+            ul.appendChild(li_regip);
+            postDetail.appendChild(ul);
+            }, parsedid);
+        };
     </script>
   </body>
   </html>
