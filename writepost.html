@@ -1,17 +1,10 @@
 <!DOCTYPE html>
-<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Write something else you want</title>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
- <!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<!-- Latest compiled and minified JavaScript -->
-<script src="./functions.js"></script> <!--api post get functions-->
-<link rel="stylesheet" type="text/css" href="mainstyle.css">
-<script type="text/javascript" src="http://jsgetip.appspot.com"></script> <!--IP가져오기용-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Write something else you want</title><script src="./functions.js"></script> <!--api post get functions-->
+    <link rel="stylesheet" type="text/css" href="mainstyle.css">
+    <script type="text/javascript" src="http://jsgetip.appspot.com/?getip"></script> <!--IP가져오기용-->
 </head>
 <body>
     <div class="topnav">
@@ -21,76 +14,50 @@
         <b href="#">소개</b>
         <b href="#">게시판</b>
     </div>
-    
+      
     <div class="row">
         <div class="column left">
             <h1>게시판</h1>
-                <div id="board_name" class = "table_style_left">
-          </div>
-     </div>
-     
-    <div class="column middle">
-        <table class="table table-bordered">
-    <thead>
-        <caption> 글쓰기 </caption>
-    </thead>
-    <tbody id="posting">
-        <form id="form_id" method="POST" encType="multiplart/form-data">
-            <tr>
-                <th>제목: </th>
-                <td><input type="text" placeholder="제목을 입력하세요. " name="post_title" class="form-control"/></td>
-            </tr>
-            <tr>
-                <th>내용: </th>
-                <td><textarea cols="10" placeholder="내용을 입력하세요. " name="post_content" class="form-control"></textarea></td>
-                <input type="hidden" id="id" name="id" value="">
-                <input type="hidden" id="board_id" name="board_id" value="">
-                <input type="hidden" id="post_user_name" name="post_user_name" value="Unknown"/>
-                <input type="hidden" id="post_reg_ip" name="post_reg_ip" value="">
-                <input type="hidden" id="post_reg_date" name="post_reg_date" value="">
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" value="글 등록" class="pull-right"/>
-                </td>
-            </tr>
-        </form>
-    </tbody>
-</table>
-</div>
-</div>
-<div class="footer">
-        <p> Copyright ⓒ Your Website 2019 </p>
-      </div>
+            <div id="board_name" class = "table_style_left"> <!--일단 div로 영역을 만듬 이후에 js로 내부 태그 생성-->
+            </div>
+         </div>
+        <div class="column middle" id="postingform"> <!--게시글 전문을 가져올 부분-->
+            <caption> 글쓰기 </caption>
+              <div id="posting">
+              </div>
+        </div>
+    </div>
+
+    <div class="footer">
+            <p> Copyright ⓒ Your Website 2019 </p>
+    </div>
 
 
-<script>
-      document.getElementById("form_id").action = "http://27.1.60.24:9900/board/post/"+String(getid());
-      document.getElementById("id").value = getid();
-      var params = new URLSearchParams(document.location.search.substring(1));
-      document.getElementById("board_id").value = params.get("id")
-      document.getElementById("post_reg_time").value = getTimeStamp();
-      document.getElementById("post_reg_ip").value = ipv();
+    
 
-    //~~~ function, to bring board 
-      var boardList = document.getElementById("board_name")
-      //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
-      var ul = document.createElement('ul');
-      getboardlist( _boardList => {
-        for(var i=0; i<_boardList.length; i++) {
-          var li = document.createElement('li');
-          var a = document.createElement('a');
-          a.innerHTML = _boardList[i].board_name;
-          a.id = _boardList[i].id;
-          a.href = "boardlist.html?id="+_boardList[i].id;
-          li.appendChild(a)
-          ul.appendChild(li);
-        }
-        //ul.appendChild(li); //ul 아래에 li을 넣어줌 
-        boardList.appendChild(ul); 
-      });
 
-      //id값을 가져오기 위한 함수
+    <script>
+      {
+        //function for calling boardlist
+         var boardList = document.getElementById("board_name")
+        //api에 있는 board list의 개수를  -> for문을 돌려서 가져온 후, 그만큼 카테고리 생성
+        var ul = document.createElement('ul');
+        getboardlist( _boardList => {
+          for(var i=0; i<_boardList.length; i++) {
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.innerHTML = _boardList[i].board_name;
+            a.id = _boardList[i].id;
+            a.href = "boardlist.html?id="+_boardList[i].id;
+            li.appendChild(a)
+            ul.appendChild(li);
+          }
+          //ul.appendChild(li); //ul 아래에 li을 넣어줌 
+          boardList.appendChild(ul); 
+        });
+      };
+
+      //1. post의 id값을 가져오기 위한 함수
       function getid(){
           var boardnum; //보드의 개수 (이후에 보드 별로 포스트 개수를 가져오기 위함)
           getboardlist(boardlist=>{ boardnum = boardlist.length}) //getboardlist함수에서 가져온 json object내에 boardlist개수를 가져옴
@@ -102,35 +69,56 @@
           }
           return boardnum; //새로운 id부여를 위해서 총 개수보다 하나 더 큰 id값을 줌
       }
+      
+      //2. board_id값을 가져오기 위한 변수 (URL parsing)
+      var params = new URLSearchParams(document.location.search.substring(1));
+      var boardid = params.get("id")
 
+      //3. post_title을 USER로부터 받기
+      var inputlocation = document.getElementById('postingform');
+      var inputtitle = document.createElement('input');
+      inputtitle.setAttribute('type',"text");
+      inputtitle.setAttribute('placeholer',"제목을 입력하세요");
+      inputlocation.appendChild(inputtitle);
+      //쓴 내용을 읽어와서 새 변수에 저장하기
+      var title = "";
+
+      //4. post_content를 USER로부터 받기
+      var inputlocation = document.getElementById('postingform');
+      var inputcontent = document.createElement('input');
+      inputcontent.setAttribute('type',"text");
+      inputcontent.setAttribute('placeholer',"내용을 입력하세요");
+      inputlocation.appendChild(inputcontent);
+      //쓴 내용을 읽어와서 새 변수에 저장하기
+      var content = "";
+
+      //5-1시간데이터 인덱싱을 통해 원하는 구간만 자르기 위한 함수
       function leadingZeros(n, digits) {
-          var zero = '';
-          n = n.toString();
+        var zero = '';
+        n = n.toString();
           if (n.length < digits) {
               for (i = 0; i < digits - n.length; i++)
               zero += '0';
             }
-            return zero + n;
+         return zero + n;
         }
 
-
+      //5-2현재 시간을 가져오는 함수
       function getTimeStamp() {
-          var d = new Date();
-          var ampm;
-          if (leadingZeros(d.getHours(), 2) < 13){
-              ampm="AM";
-          }
-          else {ampm ="PM"};
-          var s = leadingZeros(d.getFullYear(), 4) + '-' + leadingZeros(d.getMonth() + 1, 2)
-          + '-' + leadingZeros(d.getDate(), 2) + ' ' + leadingZeros(d.getHours(), 2)
-          + ':' +leadingZeros(d.getMinutes(), 2) + ':' + leadingZeros(d.getSeconds(), 2) + ' ' + ampm;
-          return s;
+        var d = new Date();
+        var ampm;
+        if (leadingZeros(d.getHours(), 2) < 13){
+            ampm="AM";
         }
+        else {ampm ="PM"};
+        var s = leadingZeros(d.getFullYear(), 4) + '-' + leadingZeros(d.getMonth() + 1, 2)
+        + '-' + leadingZeros(d.getDate(), 2) + ' ' +leadingZeros(d.getHours(), 2)
+        + ':' +leadingZeros(d.getMinutes(), 2) + ':' + leadingZeros(d.getSeconds(), 2) + ' ' +ampm;
+        return s;}
 
-      function ipv(){
-          return -1 !=ip().indexOf(":")?6:4
-      }
+        var infoArray = {"id":getid(), "board_id":boardid, "post_title":
+        title, "post_content": content, "post_user_name":"Unknown", "post_reg_time":getTimeStamp(), "post_reg_ip":getip()}
 
-</script>
+    </script>
 </body>
 </html>
