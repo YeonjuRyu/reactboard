@@ -160,7 +160,27 @@ function getpostdetail(UICallback){
             }
         })
 }
-//boardlist();
-//postlist(1);
-//viewpost(1);
-//console.log(boardlist())
+
+/*8번 기능
+endpoint: 27.1.60.24:9900/board/post/:post의 id(ex: 27.1.60.24:9900/board/post/1)
+method: get* post
+input param: postid
+output param: {result, postDetail, error}
+reference : https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Uploading_JSON_data
+*/
+function postnewcontent(infoArray,id){
+    fetch('http://27.1.60.24:9900/board/post/'+String(id), {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'},
+        body: JSON.stringify(infoArray)
+            })/*.then(response => response.json()) --> 이 부분 쓰면 token 문제 발생*/ 
+            .then((jsonObj) =>  {
+                if(jsonObj.result == "ok"){
+                    alert('전송 성공')
+                } else if(jsonObj.result == "fail"){
+                    alert('error! reason is:' + jsonObj.error)
+                }
+            })
+        }
